@@ -14,13 +14,6 @@ pipeline {
             }
         }
 
-        stage('Version Bump') {
-            steps {
-                sh '''
-                    npm version patch --no-git-tag-version
-                '''
-            }
-        }
 
 
         stage('Install dependencies') {
@@ -33,6 +26,25 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'npm test'
+            }
+        }
+
+        stage('Version Bump') {
+            steps {
+                sh '''
+                    npm version patch --no-git-tag-version
+                '''
+            }
+        }
+
+        stage('SAST - Semgrep') {
+            steps {
+                sh '''
+                    semgrep \
+                    --config auto \
+                    --error \
+                    .
+                '''
             }
         }
 
