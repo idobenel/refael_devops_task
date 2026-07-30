@@ -4,6 +4,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "sample-nodejs"
+        IMAGE_VERSION = ""
     }
 
     stages {
@@ -51,18 +52,30 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    def version = sh(
+
+                    IMAGE_VERSION = sh(
                         script: "node -p \"require('./package.json').version\"",
                         returnStdout: true
                     ).trim()
 
                     sh """
                         docker build \
-                        -t ${IMAGE_NAME}:${version} \
+                        -t ${IMAGE_NAME}:${IMAGE_VERSION} \
                         -t ${IMAGE_NAME}:latest \
                         .
                     """
                 }
+            }
+        }
+
+        stage('Docker Image Scan - Trivy') {
+            steps {
+                sh """
+                    trivy image \
+                    --severity HIGH,CRITICAL \
+                    --exit-code 1 \
+                    ${IMAGE_NAME}:${IMAGE_VERSION}
+                """
             }
         }
 
