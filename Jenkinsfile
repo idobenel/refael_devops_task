@@ -2,10 +2,6 @@ pipeline {
 
     agent any
 
-    environment {
-        APP_NAME = "sample-nodejs"
-    }
-
     stages {
 
         stage('Checkout') {
@@ -15,20 +11,16 @@ pipeline {
         }
 
 
-        stage('Version Bump') {
+        stage('Install dependencies') {
             steps {
-                sh '''
-                    npm version patch
-                '''
+                sh 'npm install'
             }
         }
 
 
-        stage('Build') {
+        stage('Test') {
             steps {
-                sh '''
-                    npm install
-                '''
+                sh 'npm test'
             }
         }
 
