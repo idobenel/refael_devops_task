@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
+RUN npm install -g npm@latest
+
 # Install dependencies, using npm ci for a consistent environment
 RUN npm ci
 
