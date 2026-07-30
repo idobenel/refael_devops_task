@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: sample-nodejs
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: sample-nodejs
+
+  template:
+    metadata:
+      labels:
+        app: sample-nodejs
+
+    spec:
+      containers:
+        - name: sample-nodejs
+          image: sample-nodejs:1.0
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8080
+
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10

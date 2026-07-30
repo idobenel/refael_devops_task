@@ -1,0 +1,20 @@
+# As required in the task, using alpine due to its size
+FROM node:22-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies, using npm ci for a consistent environment
+RUN npm ci
+
+# Copy the rest of the application
+COPY . .
+
+# Expose port 8080
+EXPOSE 8080
+
+# Command to run the application
+CMD ["node", "app.js"]
