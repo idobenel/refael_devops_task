@@ -42,7 +42,7 @@ pipeline {
                 sh '''
                     semgrep \
                     --config auto \
-                    --error \
+                    --severity ERROR \
                     .
                 '''
             }

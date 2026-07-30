@@ -13,6 +13,11 @@ RUN npm ci
 # Copy the rest of the application
 COPY . .
 
+# Create a non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+USER appuser
+
 # Expose port 8080
 EXPOSE 8080
 
