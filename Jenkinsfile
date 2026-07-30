@@ -2,11 +2,23 @@ pipeline {
 
     agent any
 
+    environment {
+        IMAGE_NAME = "sample-nodejs"
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Version Bump') {
+            steps {
+                sh '''
+                    npm version patch
+                '''
             }
         }
 
@@ -26,9 +38,19 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh '''
-                    docker build -t sample-nodejs:latest .
-                '''
+                script {
+                    def version = sh(
+                        script: "node -p \"require('./package.json').version\"",
+                        returnStdout: true
+                    ).trim()
+
+                    sh """
+                        docker build \
+                        -t ${IMAGE_NAME}:${version} \
+                        -t ${IMAGE_NAME}:latest \
+                        .
+                    """
+                }
             }
         }
 
