@@ -14,3 +14,9 @@ A lightweight Node.js application. It features basic web endpoints, Prometheus m
 ## Prerequisites
 
 - Node.js (v22.1.0)
+
+
+## Versioning strategy:
+- Application version is managed using Git tags.
+- Every release is associated with a semantic version.
+- Docker images are tagged using the same version.

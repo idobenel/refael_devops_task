@@ -17,7 +17,7 @@ pipeline {
         stage('Version Bump') {
             steps {
                 sh '''
-                    npm version patch
+                    npm version patch --no-git-tag-version
                 '''
             }
         }
