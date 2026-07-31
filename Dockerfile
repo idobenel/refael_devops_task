@@ -1,27 +1,33 @@
-# As required in the task, using alpine due to its size
-FROM node:20-alpine
+# Build stage
+FROM node:22-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy dependency files first for better layer caching
 COPY package*.json ./
 
-#RUN npm install -g npm@latest
-
-# Install dependencies, using npm ci for a consistent environment
+# Install exact dependencies from lock file
 RUN npm ci
 
-# Copy the rest of the application
+# Copy application source
 COPY . .
 
-# Create a non-root user
+
+# Runtime stage
+FROM node:22-alpine AS runtime
+
+WORKDIR /app
+
+# Copy only required runtime files
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/app.js ./app.js
+COPY --from=builder /app/package*.json ./
+
+# Create non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 USER appuser
 
-# Expose port 8080
 EXPOSE 8080
 
-# Command to run the application
 CMD ["node", "app.js"]
