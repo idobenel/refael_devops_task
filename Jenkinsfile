@@ -19,7 +19,7 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'npm install'
+                sh 'npm ci'
             }
         }
 
@@ -76,6 +76,25 @@ pipeline {
                     --ignorefile .trivyignore \
                     --exit-code 1 \
                     ${IMAGE_NAME}:${IMAGE_VERSION}
+                """
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh """
+                    helm upgrade --install sample-nodejs \
+                    ./helm/sample-nodejs \
+                    --set image.repository=${IMAGE_NAME} \
+                    --set image.tag=${IMAGE_VERSION}
+                """
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh """
+                    kubectl rollout status deployment/sample-nodejs-sample-nodejs
                 """
             }
         }
