@@ -24,3 +24,8 @@ A lightweight Node.js application. It features basic web endpoints, Prometheus m
 ## Trivy Ignore
 Trivy is configured to fail builds on HIGH and CRITICAL vulnerabilities.
 One exception exists for CVE-2026-14257, which originates from npm bundled in the official Node image and is not used by the application runtime.
+
+
+
+# StatefulSet vs Deployment
+"Due to scope constraints, I used Helm deployment from Jenkins. In production I would separate deployment state into a GitOps repository managed by ArgoCD."

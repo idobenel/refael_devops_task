@@ -80,6 +80,14 @@ pipeline {
             }
         }
 
+        stage('Load Image to Kind') {
+            steps {
+                sh """
+                    kind load docker-image ${IMAGE_NAME}:${IMAGE_VERSION} --name devops-task
+                """
+            }
+        }
+
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
