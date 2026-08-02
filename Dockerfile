@@ -14,7 +14,7 @@ COPY . .
 
 
 # Runtime stage
-FROM node:22-alpine AS runtime
+FROM node:22.22-alpine AS runtime
 
 WORKDIR /app
 

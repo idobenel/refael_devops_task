@@ -73,6 +73,7 @@ pipeline {
                 sh """
                     trivy image \
                     --severity HIGH,CRITICAL \
+                    --ignorefile .trivyignore \
                     --exit-code 1 \
                     ${IMAGE_NAME}:${IMAGE_VERSION}
                 """

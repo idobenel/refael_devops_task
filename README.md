@@ -20,3 +20,7 @@ A lightweight Node.js application. It features basic web endpoints, Prometheus m
 - Application version is managed using Git tags.
 - Every release is associated with a semantic version.
 - Docker images are tagged using the same version.
+
+## Trivy Ignore
+Trivy is configured to fail builds on HIGH and CRITICAL vulnerabilities.
+One exception exists for CVE-2026-14257, which originates from npm bundled in the official Node image and is not used by the application runtime.

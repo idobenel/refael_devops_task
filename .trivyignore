@@ -1,0 +1,4 @@
+# False positive / accepted risk:
+# brace-expansion is a transitive dependency of npm bundled in node base image.
+# Application runtime does not use this dependency directly.
+CVE-2026-14257
