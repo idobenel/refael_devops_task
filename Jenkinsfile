@@ -102,7 +102,8 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 sh """
-                    kubectl rollout status deployment/sample-nodejs-sample-nodejs
+                    kubectl rollout status deployment/sample-nodejs-sample-nodejs --timeout=180s
+                    kubectl get pods
                 """
             }
         }
