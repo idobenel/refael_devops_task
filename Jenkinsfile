@@ -1,28 +1,26 @@
 pipeline {
-
     agent any
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+    }
 
     environment {
         IMAGE_NAME = "sample-nodejs"
-        IMAGE_VERSION = ""
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-
-
         stage('Install dependencies') {
             steps {
                 sh 'npm ci'
             }
         }
-
 
         stage('Test') {
             steps {
@@ -52,11 +50,11 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-
-                    IMAGE_VERSION = sh(
+                    def imageVersion = sh(
                         script: "node -p \"require('./package.json').version\"",
                         returnStdout: true
                     ).trim()
+                    env.IMAGE_VERSION = imageVersion
 
                     sh """
                         docker build \
@@ -106,6 +104,19 @@ pipeline {
                     kubectl get pods
                 """
             }
+        }
+
+    }
+
+
+    post {
+        failure {
+            sh '''
+                echo "Deployment failed - collecting Kubernetes diagnostics"
+                kubectl get pods || true
+                kubectl describe pods || true
+                kubectl get events --sort-by=.metadata.creationTimestamp || true
+            '''
         }
 
     }
