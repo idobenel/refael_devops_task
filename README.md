@@ -179,9 +179,12 @@ where Kubernetes manifests are synchronized declaratively.
 The deployment was validated by:
 - Successful Kubernetes rollout
 - Running pod status
-- Access through NGINX Ingress
-
+- Application access through NGINX Ingress
+- 
 Example:
 kubectl get pods
 NAME                                      READY   STATUS
 sample-nodejs-sample-nodejs-xxxxx        1/1     Running
+
+Application endpoint:
+http://sample-nodejs.local/my-app
