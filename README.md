@@ -27,6 +27,14 @@ SAST scanning, container vulnerability scanning, Docker image creation, and Kube
 5. Access: http://sample-nodejs.local
 
 
+## Kubernetes Access
+
+The Jenkins container requires access to a Kubernetes kubeconfig.
+For local KIND execution, the kubeconfig server address should be reachable from the Jenkins container.
+The provided environment uses the KIND Docker network and the Kubernetes API endpoint:
+https://devops-task-control-plane:6443
+
+
 ## CI/CD pipeline
 The pipeline contains the following stages:
 
