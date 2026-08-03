@@ -136,9 +136,11 @@ Therefore Kubernetes Deployment was selected.
 ## Why Helm?
 Helm allows parameterized Kubernetes manifests and simplifies versioned deployments.
 
-## Why kind load instead of registry?
-kind load is used for local development and testing. 
-In production, a container registry would be used.
+## Docker Registry
+The challenge was executed on a local KIND cluster.
+Therefore, the pipeline loads the Docker image directly into KIND using kind load docker-image.
+In a production environment, the image would be pushed to a private container registry
+and Kubernetes would pull the image from the registry.
 
 ## GitOps / ArgoCD
 For this challenge, direct Helm deployment from the CI pipeline was selected.
